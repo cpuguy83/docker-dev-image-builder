@@ -19,5 +19,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup buildkit
+        run: docker buildx create --use
       - name: build
         run: docker buildx bake
