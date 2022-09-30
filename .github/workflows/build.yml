@@ -1,0 +1,23 @@
+on:
+  workflow_dispatch:
+
+env:
+  USE_BUILDX: 1
+  BUILDX: "docker buildx"
+
+jobs:
+  build_matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: login to ghcr.io
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: build
+        run: docker buildx bake
